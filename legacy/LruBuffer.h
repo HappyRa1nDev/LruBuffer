@@ -41,9 +41,11 @@ public:
         if (!Data.count(key)) {
             throw std::runtime_error("bad key");
         }
+        
         Queue.erase({LastUse[key], key});
         LastUse[key] = Tm++;
         Queue.insert({LastUse[key], key});
+
         return Data[key];
     }
 

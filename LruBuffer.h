@@ -15,7 +15,11 @@ private:
 
 public:
     LruBuffer() = delete;
-    explicit LruBuffer(size_t max_size) : maxSize(max_size) {}
+    explicit LruBuffer(size_t max_size) : maxSize(max_size) {
+        if(max_size == 0) {
+            throw runtime_error("must be positive");
+        }
+    }
 
     void erase(const K& key) {
         if (!Data.count(key)) {
