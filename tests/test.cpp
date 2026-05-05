@@ -102,3 +102,27 @@ TEST(LruBufferTest, AccessOrderUpdate) {
     EXPECT_TRUE(buffer.check(1));
     EXPECT_TRUE(buffer.check(3));
 }
+
+TEST(LruBufferTest, SetRvalueLvalue) {
+    LruBuffer<int, int> buffer(2);
+    int k = 1;
+    int v = 10;
+    EXPECT_NO_THROW(buffer.set(k, 10));
+    EXPECT_NO_THROW(buffer.set(1, v));
+    EXPECT_NO_THROW(buffer.set(k, v));
+    EXPECT_NO_THROW(buffer.set(1, 10));
+}
+
+TEST(LruBufferTest, GetRvalueLvalue) {
+    LruBuffer<int, int> buffer(2);
+    int k = 1;
+    int v = 10;
+    buffer.set(1, 10);
+
+    EXPECT_NO_THROW(buffer.get(k, 10));
+    EXPECT_NO_THROW(buffer.get(1, v));
+    EXPECT_NO_THROW(buffer.get(k, v));
+    EXPECT_NO_THROW(buffer.get(1, 10));
+}
+
+

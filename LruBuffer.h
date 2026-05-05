@@ -14,7 +14,8 @@ private:
     std::set<std::pair<size_t, K>> Queue;
 
 public:
-    LruBuffer(size_t max_size) : maxSize(max_size) {}
+    LruBuffer() = delete;
+    explicit LruBuffer(size_t max_size) : maxSize(max_size) {}
 
     void erase(const K& key) {
         if (!Data.count(key)) {
@@ -35,19 +36,20 @@ public:
         }
         Data[key] = std::forward<V>(val);
         LastUse[key] = Tm++;
-        Queue.insert({LastUse[key],  std::forward<K>(key)});
+        Queue.insert({LastUse[key],  std::forward<K>(key)}); //в с++ 17 порядок вычисления слева на право
     }
 
-    V get(const K& key) {
+    V get(K&& key) {
         if (!Data.count(key)) {
             throw std::runtime_error("bad key");
         }
 
         Queue.erase({LastUse[key], key});
         LastUse[key] = Tm++;
-        Queue.insert({LastUse[key], key});
+        auto& value = Data[key]; 
+        Queue.insert({LastUse[key], std::forward<K>(key)});
 
-        return Data[key];
+        return value;
     }
 
     bool check(const K& key) {
