@@ -42,8 +42,8 @@ public:
         LastUse[key] = Tm++;
 
         auto& luValue = LastUse[key];
-        
-        Queue.emplace(luValue,  std::forward<K>(key)); //в с++ 17 порядок вычисления слева на право
+
+        Queue.emplace(luValue,  std::forward<K>(key));
     }
 
     V get(auto&& key) {
