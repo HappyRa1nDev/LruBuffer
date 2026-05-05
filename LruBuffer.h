@@ -40,7 +40,7 @@ public:
         }
         Data[key] = std::forward<V>(val);
         LastUse[key] = Tm++;
-        Queue.insert({LastUse[key],  std::forward<K>(key)}); //в с++ 17 порядок вычисления слева на право
+        Queue.emplace({LastUse[key],  std::forward<K>(key)}); //в с++ 17 порядок вычисления слева на право
     }
 
     V get(auto&& key) {
@@ -51,7 +51,7 @@ public:
         Queue.erase({LastUse[key], key});
         LastUse[key] = Tm++;
         auto& value = Data[key]; 
-        Queue.insert({LastUse[key], std::forward<K>(key)});
+        Queue.emplace({LastUse[key], std::forward<K>(key)});
 
         return value;
     }
