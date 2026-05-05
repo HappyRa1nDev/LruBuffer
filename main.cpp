@@ -2,7 +2,7 @@
 #include <iostream>
 
 int main() {
-    LruBuffer buffer(2);
+    LruBuffer<int, int> buffer(2);
 
     buffer.set(1, 10);
     buffer.set(2, 20);

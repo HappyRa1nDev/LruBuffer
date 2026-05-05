@@ -4,18 +4,19 @@
 #include <utility>
 #include <stdexcept>
 
+template<typename K, typename V>
 class LruBuffer {
 private:
     size_t maxSize = 1;
     size_t Tm = 0;
-    std::unordered_map<int, int> Data;
-    std::unordered_map<int, int> LastUse;
-    std::set<std::pair<int, int>> Queue;
+    std::unordered_map<K, V> Data;
+    std::unordered_map<K, size_t> LastUse;
+    std::set<std::pair<size_t, K>> Queue;
 
 public:
-    LruBuffer(int max_size) : maxSize(max_size) {}
+    LruBuffer(size_t max_size) : maxSize(max_size) {}
 
-    void erase(int key) {
+    void erase(const K& key) {
         if (!Data.count(key)) {
             throw std::runtime_error("fail erase");
         }
@@ -24,7 +25,7 @@ public:
         Data.erase(key);
     }
 
-    void set(int key, int val) {
+    void set(K&& key, V&& val) {
         if (Data.count(key)) {
             erase(key);
         }
@@ -32,12 +33,12 @@ public:
             auto [_, kk] = *Queue.begin();
             erase(kk);
         }
-        Data[key] = val;
+        Data[key] = std::forward<V>(val);
         LastUse[key] = Tm++;
-        Queue.insert({LastUse[key], key});
+        Queue.insert({LastUse[key],  std::forward<K>(key)});
     }
 
-    int get(int key) {
+    V get(const K& key) {
         if (!Data.count(key)) {
             throw std::runtime_error("bad key");
         }
@@ -49,7 +50,7 @@ public:
         return Data[key];
     }
 
-    bool check(int key) {
+    bool check(const K& key) {
         return Data.count(key);
     }
 };
