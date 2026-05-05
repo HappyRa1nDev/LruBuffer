@@ -17,7 +17,7 @@ public:
     LruBuffer() = delete;
     explicit LruBuffer(size_t max_size) : maxSize(max_size) {
         if(max_size == 0) {
-            throw runtime_error("must be positive");
+            throw std::runtime_error("must be positive");
         }
     }
 
@@ -30,7 +30,7 @@ public:
         Data.erase(key);
     }
 
-    void set(K&& key, V&& val) {
+    void set(auto&& key, auto&& val) {
         if (Data.count(key)) {
             erase(key);
         }
@@ -43,7 +43,7 @@ public:
         Queue.insert({LastUse[key],  std::forward<K>(key)}); //в с++ 17 порядок вычисления слева на право
     }
 
-    V get(K&& key) {
+    V get(auto&& key) {
         if (!Data.count(key)) {
             throw std::runtime_error("bad key");
         }

@@ -119,10 +119,8 @@ TEST(LruBufferTest, GetRvalueLvalue) {
     int v = 10;
     buffer.set(1, 10);
 
-    EXPECT_NO_THROW(buffer.get(k, 10));
-    EXPECT_NO_THROW(buffer.get(1, v));
-    EXPECT_NO_THROW(buffer.get(k, v));
-    EXPECT_NO_THROW(buffer.get(1, 10));
+    EXPECT_NO_THROW(buffer.get(k));
+    EXPECT_NO_THROW(buffer.get(1));
 }
 
 
